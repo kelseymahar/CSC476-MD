@@ -8,6 +8,7 @@ public class FollowCam : MonoBehaviour
 
     [Header("Set in Inspector")]
     public float easing = 0.05f;
+    public Vector2 minXY = Vector2.zero;
 
     [Header("Set Dynamically")]
     public float camZ;
@@ -21,11 +22,15 @@ public class FollowCam : MonoBehaviour
 
         // get pos of the poi
         Vector3 destination = POI.transform.position;
+        // Limit the X & Y to minimum values
+        destination.x = Mathf.Max(minXY.x, destination.x);
         // Interpolate from the current Camera position toward destination
         destination = Vector3.Lerp(transform.position, destination, easing);
         // Force destination.z to be camZ to keep the camera far enough away
         destination.z = camZ;
         // Set the camera to be the destination
         transform.position = destination;
+        // Set the orthographicSize of the Camera to keep Ground in view
+        Camera.main.orthographicSize = destination.y + 10;
     }
 }
