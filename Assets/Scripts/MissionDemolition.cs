@@ -98,6 +98,7 @@ public class MissionDemolition : MonoBehaviour {
         if (level == levelMax)
         {
             level = 0;
+            return;
         }
         StartLevel();
     }
