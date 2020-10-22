@@ -19,6 +19,7 @@ public class Slingshot : MonoBehaviour
     public GameObject projectile;
     public bool aimingMode;
     private Rigidbody projectileRigidbody;
+    private LineRenderer rubberBand;
     
     static public Vector3 LAUNCH_POS
     {
@@ -34,6 +35,8 @@ public class Slingshot : MonoBehaviour
         launchPoint = launchPointTrans.gameObject;
         launchPoint.SetActive(false);
         launchPos = launchPointTrans.position;
+        rubberBand = GetComponent<LineRenderer>();
+        rubberBand.enabled = true;
     }
 
     void OnMouseEnter() {
@@ -57,9 +60,20 @@ public class Slingshot : MonoBehaviour
         // Set it to the isKinematic for now
         projectileRigidbody = projectile.GetComponent<Rigidbody>();
         projectileRigidbody.isKinematic = true;
+        rubberBand.SetPosition(1, projectile.transform.position);
     }
 
     void Update() {
+
+        if (projectile != null)
+        {
+            rubberBand.SetPosition(1, projectile.transform.position);
+        }
+        else 
+        {
+            rubberBand.SetPosition(1, launchPoint.transform.position);
+        }
+
         // If slingshot is not in aimingMode, don't run this code
         if (!aimingMode)
         {
